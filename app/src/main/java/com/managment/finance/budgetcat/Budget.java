@@ -7,6 +7,7 @@ package com.managment.finance.budgetcat;
 public class Budget {
 
     private int budgetID;
+    private String budgetName;
 
     public Budget(){
 
