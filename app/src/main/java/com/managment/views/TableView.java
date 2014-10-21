@@ -1,9 +1,11 @@
-package com.managment.finance.budgetcat;
+package com.managment.views;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.managment.finance.budgetcat.R;
 
 public class TableView extends Activity {
 
