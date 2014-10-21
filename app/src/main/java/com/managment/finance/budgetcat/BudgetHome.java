@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
 
 
 public class BudgetHome extends Activity {
@@ -11,7 +12,8 @@ public class BudgetHome extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_budget_home);
+        Intent intent = new Intent(this, TableView.class);
+        startActivity(intent);
     }
 
 
