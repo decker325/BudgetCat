@@ -10,8 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.managment.finance.budgetcat.R;
+
+import java.util.ArrayList;
 
 
 public class views extends Activity {
@@ -59,6 +63,57 @@ public class views extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_views, container, false);
+
+            ArrayList<String> transactions = new ArrayList<String>();
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+            transactions.add("Gas,22.87");
+            transactions.add("Rent,400");
+            transactions.add("Food,10.50");
+
+
+
+            //R.layout.list_item_forecast;
+
+            ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    R.layout.list_item_transactions,
+                    R.id.list_item_transactions_textview,
+                    transactions
+            );
+            ListView listView =(ListView)rootView.findViewById(R.id.listView_transactions);
+            listView.setAdapter(mForecastAdapter);
+
+
+
+
             return rootView;
         }
     }

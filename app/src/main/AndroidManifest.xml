@@ -16,16 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.managment.views.TableView"
             android:label="@string/title_activity_table_view" >
         </activity>
-
-
         <activity
             android:name=".entry"
             android:label="@string/title_activity_entry" >
+        </activity>
+        <activity
+            android:name="com.managment.views.views"
+            android:label="@string/title_activity_views" >
         </activity>
     </application>
 
