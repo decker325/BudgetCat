@@ -5,17 +5,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
-
 import com.managment.views.TableView;
+import com.managment.data.SQLDatabase;
 
 
 public class BudgetHome extends Activity {
+    private SQLDatabase budgetCatDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent intent = new Intent(this, TableView.class);
         startActivity(intent);
+
+        budgetCatDatabase = new SQLDatabase(this);
     }
 
 
