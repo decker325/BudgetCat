@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,12 +60,12 @@ public class views extends Activity {
 
         public PlaceholderFragment() {
         }
-
+        private final String TAG = ((Object) this).getClass().getSimpleName();
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_views, container, false);
-
+            Log.e(TAG, "+++ In onCreate() +++");
             ArrayList<String> transactions = new ArrayList<String>();
             transactions.add("Gas,22.87");
             transactions.add("Rent,400");
@@ -113,8 +115,13 @@ public class views extends Activity {
 
 
 
-
             return rootView;
+        }
+
+        public void onResume() {
+            super.onResume();
+            Log.e(TAG, "++ In onResume() ++");
+            // Rest of onResume()...
         }
     }
 }
