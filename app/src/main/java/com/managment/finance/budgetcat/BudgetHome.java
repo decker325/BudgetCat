@@ -40,6 +40,8 @@ public class BudgetHome extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }else if(id== R.id.action_quit){
+            System.exit(0);
         }
         return super.onOptionsItemSelected(item);
     }

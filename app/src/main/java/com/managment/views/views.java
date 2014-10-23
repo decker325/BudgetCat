@@ -65,7 +65,9 @@ public class views extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_views, container, false);
+
             Log.e(TAG, "+++ In onCreate() +++");
+
             ArrayList<String> transactions = new ArrayList<String>();
             transactions.add("Gas,22.87");
             transactions.add("Rent,400");
