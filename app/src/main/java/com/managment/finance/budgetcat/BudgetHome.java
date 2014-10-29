@@ -18,7 +18,7 @@ public class BudgetHome extends Activity {
         super.onCreate(savedInstanceState);
 
         //Intent intent = new Intent(this, TableView.class);
-        Intent intent = new Intent(this, views.class);
+        Intent intent = new Intent(this, entry.class);
         startActivity(intent);
 
         budgetCatDatabase = new SQLDatabase(this);
