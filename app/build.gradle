@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.managment.finance.budgetcat"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -22,4 +22,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.android.support:appcompat-v7:21.+'
+
+
 }
