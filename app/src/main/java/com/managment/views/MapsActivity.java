@@ -1,5 +1,6 @@
 package com.managment.views;
 
+import com.managment.finance.budgetcat.R;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
