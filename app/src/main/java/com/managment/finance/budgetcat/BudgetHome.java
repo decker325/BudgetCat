@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+
+import com.managment.views.MapsActivity;
 import com.managment.views.TableView;
 import com.managment.views.views;
 import com.managment.data.SQLDatabase;
@@ -18,7 +20,7 @@ public class BudgetHome extends Activity {
         super.onCreate(savedInstanceState);
 
         //Intent intent = new Intent(this, TableView.class);
-        Intent intent = new Intent(this, entry.class);
+        Intent intent = new Intent(this,MapsActivity.class);
         startActivity(intent);
 
         budgetCatDatabase = new SQLDatabase(this);
