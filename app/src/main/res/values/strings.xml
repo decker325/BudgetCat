@@ -8,5 +8,6 @@
     <string name="title_activity_entry">entry</string>
     <string name="title_activity_views">ListView</string>
     <string name="menu_quit">Quit</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
