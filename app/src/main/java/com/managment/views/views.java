@@ -3,6 +3,7 @@ package com.managment.views;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
@@ -34,10 +35,17 @@ public class views extends Activity {
     }
 
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.views, menu);
+//        return true;
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.views, menu);
+        getMenuInflater().inflate(R.menu.budget_home, menu);
         return true;
     }
 
@@ -49,9 +57,19 @@ public class views extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }else if(id== R.id.action_quit){
+            System.exit(0);
+        }else if (id==R.id.action_map){
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }else if(id==R.id.action_list){
+            Intent intent = new Intent(this, views.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * A placeholder fragment containing a simple view.

@@ -20,8 +20,8 @@ public class BudgetHome extends Activity {
         super.onCreate(savedInstanceState);
 
         //Intent intent = new Intent(this, TableView.class);
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MapsActivity.class);
+//        startActivity(intent);
 
         budgetCatDatabase = new SQLDatabase(this);
     }
@@ -44,6 +44,15 @@ public class BudgetHome extends Activity {
             return true;
         }else if(id== R.id.action_quit){
             System.exit(0);
+        }else if (id==R.id.action_map){
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }else if(id==R.id.action_list){
+            Intent intent = new Intent(this, views.class);
+            startActivity(intent);
+        }else if (id==R.id.action_entry){
+            Intent intent = new Intent (this, entry.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
