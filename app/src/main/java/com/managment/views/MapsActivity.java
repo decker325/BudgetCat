@@ -1,16 +1,22 @@
 package com.managment.views;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.managment.finance.budgetcat.R;
+
 
 public class MapsActivity extends FragmentActivity {
 
@@ -33,7 +39,7 @@ public class MapsActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.budget_home, menu);
+        getMenuInflater().inflate(R.menu.munu_map, menu);
         return true;
     }
 
@@ -44,6 +50,44 @@ public class MapsActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+
+            if (mMap == null) {
+                // Try to obtain the map from the SupportMapFragment.
+                mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                        .getMap();
+                // Check if we were successful in obtaining the map.
+                if (mMap != null) {
+                    setUpMap();
+                }
+            }
+
+//            mMap.getMyLocation();
+
+            Location myLocation = mMap.getMyLocation();
+            LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                    myLocation.getLongitude());
+
+            CameraPosition myPosition = new CameraPosition.Builder()
+                    .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+            mMap.animateCamera(
+                    CameraUpdateFactory.newCameraPosition(myPosition));
+//getActivity()
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog dialog =  builder.setTitle("Lat:"+myLocation.getLatitude()+
+                        "\nLat:"+myLocation.getLongitude())
+
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    })
+
+                    .create();
+            dialog.show();
+
+
+
+
             return true;
         }else if(id== R.id.action_quit){
             System.exit(0);
@@ -93,6 +137,13 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+
+//        Location myLocation = mMap.getMyLocation();
+//        LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+//                myLocation.getLongitude());
+//        mMap.addMarker(new MarkerOptions().position(myLatLng));
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.setMyLocationEnabled(true);
+
     }
 }
