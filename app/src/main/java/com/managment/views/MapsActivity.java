@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +18,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.managment.finance.budgetcat.R;
+
+import java.util.ArrayList;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -27,6 +31,31 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.entry_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayList<String> type = new ArrayList<String>();
+        type.add("Gas");
+        type.add("Rent");
+
+        getFragmentManager();
+
+        //R.layout.list_item_forecast;
+
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
+                R.layout.list_item_transactions,
+                type
+        );
+
+
+// Specify the layout to use when the list of choices appears
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(typeAdapter);
+
+
+
     }
 
     @Override
