@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 
 
 public class entry extends Activity {
@@ -31,6 +34,30 @@ public class entry extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.entry, menu);
+
+        Spinner spinner = (Spinner) findViewById(R.id.entry_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayList<String> type = new ArrayList<String>();
+        type.add("Gas");
+        type.add("Rent");
+
+        getFragmentManager();
+
+        //R.layout.list_item_forecast;
+
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
+                R.layout.list_item_transactions,
+                type
+        );
+
+
+// Specify the layout to use when the list of choices appears
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(typeAdapter);
+
+
+
         return true;
     }
 
@@ -61,4 +88,6 @@ public class entry extends Activity {
             return rootView;
         }
     }
+
+
 }
