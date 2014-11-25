@@ -1,9 +1,13 @@
 package com.managment.views;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -91,29 +96,55 @@ public class MapsActivity extends FragmentActivity {
             }
 
 //            mMap.getMyLocation();
+            if(isGpsEnabled()&&isNetConnected()) {
+                Location myLocation = mMap.getMyLocation();
+                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                        myLocation.getLongitude());
 
-            Location myLocation = mMap.getMyLocation();
-            LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                    myLocation.getLongitude());
-
-            CameraPosition myPosition = new CameraPosition.Builder()
-                    .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-            mMap.animateCamera(
-                    CameraUpdateFactory.newCameraPosition(myPosition));
+                CameraPosition myPosition = new CameraPosition.Builder()
+                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                mMap.animateCamera(
+                        CameraUpdateFactory.newCameraPosition(myPosition));
 //getActivity()
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            AlertDialog dialog =  builder.setTitle("Lat:"+myLocation.getLatitude()+
-                        "\nLat:"+myLocation.getLongitude())
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+                        "\nLat:" + myLocation.getLongitude())
 
-                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
-                    })
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
 
-                    .create();
-            dialog.show();
+                        .create();
+                dialog.show();
+            }else if (!isNetConnected()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("The Network service is not connected.")
 
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+            }
+            else if (!isGpsEnabled()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("The GPS service is not enabled.")
+
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+
+            }
 
 
 
@@ -174,5 +205,74 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         mMap.setMyLocationEnabled(true);
 
+    }
+
+
+    /**
+     * Network connected
+     */
+
+
+    private boolean isNetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo[] infos = cm.getAllNetworkInfo();
+            if (infos != null) {
+                for (NetworkInfo ni : infos) {
+                    if (ni.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Wifi connected
+     */
+    private boolean isWifiConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null
+                    && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check 3g network
+     *
+     * @return
+     */
+    private boolean is3gConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null
+                    && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     *check gps enabled
+     * @return
+     */
+    private boolean isGpsEnabled() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> accessibleProviders = lm.getProviders(true);
+        for (String name : accessibleProviders) {
+            if ("gps".equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
