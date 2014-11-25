@@ -1,13 +1,31 @@
 package com.managment.views;
 
-import com.managment.finance.budgetcat.R;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.managment.finance.budgetcat.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MapsActivity extends FragmentActivity {
 
@@ -18,6 +36,31 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.entry_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayList<String> type = new ArrayList<String>();
+        type.add("Gas");
+        type.add("Rent");
+
+        getFragmentManager();
+
+        //R.layout.list_item_forecast;
+
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
+                R.layout.list_item_transactions,
+                type
+        );
+
+
+// Specify the layout to use when the list of choices appears
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(typeAdapter);
+
+
+
     }
 
     @Override
@@ -25,6 +68,99 @@ public class MapsActivity extends FragmentActivity {
         super.onResume();
         setUpMapIfNeeded();
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.munu_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+
+            if (mMap == null) {
+                // Try to obtain the map from the SupportMapFragment.
+                mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                        .getMap();
+                // Check if we were successful in obtaining the map.
+                if (mMap != null) {
+                    setUpMap();
+                }
+            }
+
+//            mMap.getMyLocation();
+            if(isGpsEnabled()&&isNetConnected()) {
+                Location myLocation = mMap.getMyLocation();
+                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                        myLocation.getLongitude());
+
+                CameraPosition myPosition = new CameraPosition.Builder()
+                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                mMap.animateCamera(
+                        CameraUpdateFactory.newCameraPosition(myPosition));
+//getActivity()
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+                        "\nLat:" + myLocation.getLongitude())
+
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+            }else if (!isNetConnected()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("The Network service is not connected.")
+
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+            }
+            else if (!isGpsEnabled()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("The GPS service is not enabled.")
+
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+
+            }
+
+
+
+            return true;
+        }else if(id== R.id.action_quit){
+            System.exit(0);
+        }else if (id==R.id.action_map){
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }else if(id==R.id.action_list){
+            Intent intent = new Intent(this, views.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -61,6 +197,82 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+
+//        Location myLocation = mMap.getMyLocation();
+//        LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+//                myLocation.getLongitude());
+//        mMap.addMarker(new MarkerOptions().position(myLatLng));
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.setMyLocationEnabled(true);
+
+    }
+
+
+    /**
+     * Network connected
+     */
+
+
+    private boolean isNetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo[] infos = cm.getAllNetworkInfo();
+            if (infos != null) {
+                for (NetworkInfo ni : infos) {
+                    if (ni.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Wifi connected
+     */
+    private boolean isWifiConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null
+                    && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check 3g network
+     *
+     * @return
+     */
+    private boolean is3gConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null
+                    && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     *check gps enabled
+     * @return
+     */
+    private boolean isGpsEnabled() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> accessibleProviders = lm.getProviders(true);
+        for (String name : accessibleProviders) {
+            if ("gps".equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
