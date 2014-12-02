@@ -1,6 +1,6 @@
 package com.managment.data;
 
-import com.managment.ORM.AccountDB;
+//import com.managment.ORM.AccountDB;
 
 public class Account {
 public String accountName;
@@ -12,7 +12,7 @@ public String notes;
 public Account(){
 	
 }
-
+/*
 public boolean add(){
 	return AccountDB.add(this);
 }
@@ -24,5 +24,5 @@ public boolean remove(){
 public boolean update(){
 	return AccountDB.update(this);
 }
-
+*/
 }
