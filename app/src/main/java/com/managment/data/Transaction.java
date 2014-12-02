@@ -9,7 +9,8 @@ public class Transaction {
     public double amount;
     public String date;
     public int category;
-    public String location;
+    public double locationLat;
+    public double locationLong;
     public String locationName;
     public String notes;
 
