@@ -50,11 +50,7 @@ public class MapsActivity extends FragmentActivity {
         ArrayList<String> type = new ArrayList<String>();
         type.add("Gas");
         type.add("Rent");
-
         getFragmentManager();
-
-        //R.layout.list_item_forecast;
-
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
                 R.layout.list_item_transactions,
                 type
@@ -67,11 +63,8 @@ public class MapsActivity extends FragmentActivity {
         spinner.setAdapter(typeAdapter);
 
 
-
-
-
-        final Button button = (Button) findViewById(R.id.button_enter);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button buttonEnter = (Button) findViewById(R.id.button_enter);
+        buttonEnter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 EditText textAmount =  (EditText)findViewById(R.id.entry_editText);
                 String valueText =textAmount.getText().toString();
@@ -91,22 +84,8 @@ public class MapsActivity extends FragmentActivity {
                     };
                     newTran.TranscationID=newKey;
                     newTran.add();
-
-
                 }
-
-
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                AlertDialog dialog = builder.setTitle(alertMessage)
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
-                        .create();
-
-                dialog.show();
+                showMessage(alertMessage,MapsActivity.this);
 
             }
         });
@@ -332,5 +311,17 @@ public class MapsActivity extends FragmentActivity {
             }
         }
         return false;
+    }
+
+    private void showMessage(String message,Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog dialog = builder.setTitle(message)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                })
+                .create();
+        dialog.show();
     }
 }

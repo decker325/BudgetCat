@@ -39,15 +39,25 @@ public class TransactionDB {
         return rowAdded;
     }
 
+    //TODO: polish this.
     public static boolean remove(Transaction transaction){
         boolean rowRemoved = true;
         try{
-
+            if(transactions.containsKey(transaction.TranscationID)) {
+                rowRemoved = false;
+            }else {
+                transactions.remove(transaction);
+//                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
+//                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
+//                Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+//                parser.addNode(node, nodes.item(0));
+            }
 
 
         }catch (Exception e){
 
         }
+
         return rowRemoved;
     }
 
