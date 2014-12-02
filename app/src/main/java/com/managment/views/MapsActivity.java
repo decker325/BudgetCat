@@ -148,27 +148,34 @@ public class MapsActivity extends FragmentActivity {
 
 //            mMap.getMyLocation();
             if(isGpsEnabled()&&isNetConnected()) {
-                Location myLocation = mMap.getMyLocation();
-                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                        myLocation.getLongitude());
 
-                CameraPosition myPosition = new CameraPosition.Builder()
-                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-                mMap.animateCamera(
-                        CameraUpdateFactory.newCameraPosition(myPosition));
+                Location myLocation;
+                try{
+                    myLocation= mMap.getMyLocation();
+                    LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                            myLocation.getLongitude());
+
+                    CameraPosition myPosition = new CameraPosition.Builder()
+                            .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                    mMap.animateCamera(
+                            CameraUpdateFactory.newCameraPosition(myPosition));
 //getActivity()
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
-                        "\nLat:" + myLocation.getLongitude())
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+                            "\nLat:" + myLocation.getLongitude())
 
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            })
 
-                        .create();
-                dialog.show();
+                            .create();
+                    dialog.show();
+                }catch (NullPointerException e){
+
+                }
+
             }else if (!isNetConnected()){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 AlertDialog dialog = builder.setTitle("The Network service is not connected.")
