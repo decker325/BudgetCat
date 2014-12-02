@@ -61,6 +61,13 @@ public class TransactionDB {
         }
         return rowUpdated;
     }
+
+//@required key contained in keyset.
+
+    public static Transaction get(String key){
+
+        return transactions.get(key);
+    }
 }
 
 

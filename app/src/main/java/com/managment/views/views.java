@@ -16,12 +16,17 @@ import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.managment.data.Transaction;
+import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
 
 
 public class views extends Activity {
+
+    private TransactionDB DBtrans =new TransactionDB();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,39 +91,27 @@ public class views extends Activity {
 
             Log.e(TAG, "+++ In onCreate() +++");
 
+
             ArrayList<String> transactions = new ArrayList<String>();
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
-            transactions.add("Gas,22.87");
-            transactions.add("Rent,400");
-            transactions.add("Food,10.50");
+            for(String key:TransactionDB.getTransactionKeys()){
+
+                Transaction toAdded = TransactionDB.get(key);
+                transactions.add("X:"+toAdded.amount);
+            }
+
+
+//            transactions.add("Gas,22.87");
+//            transactions.add("Rent,400");
+//            transactions.add("Food,10.50");
+//            transactions.add("Gas,22.87");
+//            transactions.add("Rent,400");
+//            transactions.add("Food,10.50");
+//            transactions.add("Gas,22.87");
+//            transactions.add("Rent,400");
+//            transactions.add("Food,10.50");
+//            transactions.add("Gas,22.87");
+//            transactions.add("Rent,400");
+//
 
 
 
