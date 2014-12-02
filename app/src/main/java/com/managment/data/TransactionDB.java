@@ -15,7 +15,7 @@ public class TransactionDB {
     private static BcatDOMParsingTest parser = new BcatDOMParsingTest(fileName);
     private static Map<String, Transaction> transactions = new HashMap<String, Transaction>();
 
-    public static Set<String> getAccountNames(){
+    public static Set<String> getTransactionKeys(){
         return transactions.keySet();
     }
 
