@@ -14,5 +14,4 @@ public class ObjectItem {
         this.itemId = itemId;
         this.itemName = itemName;
     }
-
 }
