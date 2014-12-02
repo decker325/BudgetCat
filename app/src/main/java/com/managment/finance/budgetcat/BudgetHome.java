@@ -9,11 +9,10 @@ import android.content.Intent;
 import com.managment.views.MapsActivity;
 import com.managment.views.TableView;
 import com.managment.views.views;
-import com.managment.data.SQLDatabase;
 
 
 public class BudgetHome extends Activity {
-    private SQLDatabase budgetCatDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,6 @@ public class BudgetHome extends Activity {
 //        Intent intent = new Intent(this, MapsActivity.class);
 //        startActivity(intent);
 
-        budgetCatDatabase = new SQLDatabase(this);
     }
 
 
