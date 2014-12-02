@@ -12,7 +12,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.managment.data.Transaction;
+import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ import java.util.List;
 
 
 public class MapsActivity extends FragmentActivity {
+
+    private TransactionDB DBtrans =new TransactionDB();
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -43,11 +50,7 @@ public class MapsActivity extends FragmentActivity {
         ArrayList<String> type = new ArrayList<String>();
         type.add("Gas");
         type.add("Rent");
-
         getFragmentManager();
-
-        //R.layout.list_item_forecast;
-
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
                 R.layout.list_item_transactions,
                 type
@@ -59,6 +62,33 @@ public class MapsActivity extends FragmentActivity {
 // Apply the adapter to the spinner
         spinner.setAdapter(typeAdapter);
 
+
+        final Button buttonEnter = (Button) findViewById(R.id.button_enter);
+        buttonEnter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText textAmount =  (EditText)findViewById(R.id.entry_editText);
+                String valueText =textAmount.getText().toString();
+                String alertMessage;
+                if(valueText.length()==0){
+                    alertMessage="Amount cannot be empty";
+                }else{
+                    alertMessage="Data added";
+                    double amount = Double.parseDouble(valueText);
+
+
+                    Transaction newTran = new Transaction();
+                    newTran.amount=amount;
+                    String newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
+                    while(TransactionDB.getTransactionKeys().contains(newKey)){
+                        newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
+                    };
+                    newTran.TranscationID=newKey;
+                    newTran.add();
+                }
+                showMessage(alertMessage,MapsActivity.this);
+
+            }
+        });
 
 
     }
@@ -97,27 +127,34 @@ public class MapsActivity extends FragmentActivity {
 
 //            mMap.getMyLocation();
             if(isGpsEnabled()&&isNetConnected()) {
-                Location myLocation = mMap.getMyLocation();
-                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                        myLocation.getLongitude());
 
-                CameraPosition myPosition = new CameraPosition.Builder()
-                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-                mMap.animateCamera(
-                        CameraUpdateFactory.newCameraPosition(myPosition));
+                Location myLocation;
+                try{
+                    myLocation= mMap.getMyLocation();
+                    LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                            myLocation.getLongitude());
+
+                    CameraPosition myPosition = new CameraPosition.Builder()
+                            .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                    mMap.animateCamera(
+                            CameraUpdateFactory.newCameraPosition(myPosition));
 //getActivity()
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
-                        "\nLat:" + myLocation.getLongitude())
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+                            "\nLat:" + myLocation.getLongitude())
 
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            })
 
-                        .create();
-                dialog.show();
+                            .create();
+                    dialog.show();
+                }catch (NullPointerException e){
+
+                }
+
             }else if (!isNetConnected()){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 AlertDialog dialog = builder.setTitle("The Network service is not connected.")
@@ -274,5 +311,17 @@ public class MapsActivity extends FragmentActivity {
             }
         }
         return false;
+    }
+
+    private void showMessage(String message,Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog dialog = builder.setTitle(message)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                })
+                .create();
+        dialog.show();
     }
 }
