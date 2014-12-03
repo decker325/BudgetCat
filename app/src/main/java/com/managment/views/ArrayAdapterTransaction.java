@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.managment.data.Transaction;
 import com.managment.finance.budgetcat.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 // here's our beautiful adapter
@@ -70,6 +74,15 @@ public class ArrayAdapterTransaction extends ArrayAdapter<Transaction> {
 
         TextView textViewItem = (TextView) convertView.findViewById(R.id.list_item_transactions_plus_amount);
         String amount = String.format("%.2f", transactionItem.amount);
+
+        TextView textDate = (TextView) convertView.findViewById(R.id.list_item_transactions_plus_date);
+        Calendar calDate = new GregorianCalendar(transactionItem.year, transactionItem.month, transactionItem.day);
+
+        // format the output with leading zeros for days and month
+        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MMM-dd");
+        textDate.setText(date_format.format(calDate.getTime()));
+
+
         textViewItem.setText(amount);
         textViewItem.setTag(transactionItem.getTransactionID());
 

@@ -30,7 +30,9 @@ public class TransactionDB {
                 NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
                 Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.getTransactionID());
                 Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+                Node node2=parser.addNodeElements("Year", Double.toString(transaction.year), element);
                 parser.addNode(node, nodes.item(0));
+                parser.addNode(node2, nodes.item(1));
             }
 
         }catch (Exception e){

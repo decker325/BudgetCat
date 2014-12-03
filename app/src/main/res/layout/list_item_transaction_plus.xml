@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="horizontal" android:layout_width="fill_parent"
-android:layout_height="fill_parent">
+android:layout_height="fill_parent"
+    android:weightSum="1">
 
 
     <TextView android:id="@+id/list_item_transactions_plus_textview"
@@ -9,12 +10,19 @@ android:layout_height="fill_parent">
         android:layout_height="wrap_content"
         android:textColor="#ff000000"
         android:textSize="30px"
-        android:text="Amount:" />
+        android:text="Amount:"/>
     <TextView android:id="@+id/list_item_transactions_plus_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ff000000"
-    android:textSize="30px" />
+        android:textSize="30px" />
 
+    <TextView android:id="@+id/list_item_transactions_plus_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ff000000"
+        android:textSize="30px"
+        android:gravity="right"
+        android:layout_marginLeft="@dimen/abc_text_size_body_1_material" />
 
-    </LinearLayout>
+</LinearLayout>

@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.managment.data.Transaction;
@@ -31,10 +32,7 @@ import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Handler;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -113,7 +111,7 @@ public class MapsActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.munu_map, menu);
+        getMenuInflater().inflate(R.menu.budget_home, menu);
         return true;
     }
 
@@ -124,85 +122,18 @@ public class MapsActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-
-            if (mMap == null) {
-                // Try to obtain the map from the SupportMapFragment.
-                mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                        .getMap();
-                // Check if we were successful in obtaining the map.
-                if (mMap != null) {
-                    setUpMap();
-                }
-            }
-
-//            mMap.getMyLocation();
-            if(isGpsEnabled()&&isNetConnected()) {
-
-                Location myLocation;
-                try{
-                    myLocation= mMap.getMyLocation();
-                    LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                            myLocation.getLongitude());
-
-                    CameraPosition myPosition = new CameraPosition.Builder()
-                            .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-                    mMap.animateCamera(
-                            CameraUpdateFactory.newCameraPosition(myPosition));
-//getActivity()
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
-                            "\nLat:" + myLocation.getLongitude())
-
-                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // User cancelled the dialog
-                                }
-                            })
-
-                            .create();
-                    dialog.show();
-                }catch (NullPointerException e){
-
-                }
-
-            }else if (!isNetConnected()){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.setTitle("The Network service is not connected.")
-
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
-
-                        .create();
-                dialog.show();
-            }
-            else if (!isGpsEnabled()){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.setTitle("The GPS service is not enabled.")
-
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
-
-                        .create();
-                dialog.show();
-
-            }
-
-
-
-            return true;
+            Intent intent = new Intent(this, TableView.class);
+            startActivity(intent);
         }else if(id== R.id.action_quit){
             System.exit(0);
-        }else if (id==R.id.action_map){
+        }else if (id==R.id.action_enter_data){
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
             Intent intent = new Intent(this, listView.class);
+            startActivity(intent);
+        }else if (id==R.id.action_map_view){
+            Intent intent = new Intent (this,MapsView.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -251,9 +182,7 @@ public class MapsActivity extends FragmentActivity {
 //        mMap.addMarker(new MarkerOptions().position(myLatLng));
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         mMap.setMyLocationEnabled(true);
-
     }
-
 
     /**
      * Network connected
@@ -263,9 +192,9 @@ public class MapsActivity extends FragmentActivity {
     private boolean isNetConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
-            NetworkInfo[] infos = cm.getAllNetworkInfo();
-            if (infos != null) {
-                for (NetworkInfo ni : infos) {
+            NetworkInfo[] info = cm.getAllNetworkInfo();
+            if (info != null) {
+                for (NetworkInfo ni : info) {
                     if (ni.isConnected()) {
                         return true;
                     }
@@ -293,7 +222,7 @@ public class MapsActivity extends FragmentActivity {
     /**
      * check 3g network
      *
-     * @return
+     *
      */
     private boolean is3gConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -310,7 +239,7 @@ public class MapsActivity extends FragmentActivity {
     /**
      *
      *check gps enabled
-     * @return
+     *
      */
     private boolean isGpsEnabled() {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -349,5 +278,91 @@ public class MapsActivity extends FragmentActivity {
                 dialog.dismiss();
             }
         }.start();
+    }
+    private void currentLocation(){
+
+        if (mMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
+            // Check if we were successful in obtaining the map.
+            if (mMap != null) {
+                setUpMap();
+            }
+        }
+
+//            mMap.getMyLocation();
+        if(isGpsEnabled()&&isNetConnected()) {
+
+            Location myLocation;
+            try{
+                myLocation= mMap.getMyLocation();
+                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                        myLocation.getLongitude());
+
+                CameraPosition myPosition = new CameraPosition.Builder()
+                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                mMap.animateCamera(
+                        CameraUpdateFactory.newCameraPosition(myPosition));
+//getActivity()
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+                        "\nLat:" + myLocation.getLongitude())
+
+                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        })
+
+                        .create();
+                dialog.show();
+
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(myLatLng)   //set center
+                        .radius(500)   //set radius in meters
+                        .fillColor(0x300000FF)
+                        .strokeColor(0x500000FF)
+                        .strokeWidth(5);
+
+                mMap.addCircle(circleOptions);
+
+
+
+
+
+            }catch (NullPointerException e){
+
+            }
+
+        }else if (!isNetConnected()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog dialog = builder.setTitle("The Network service is not connected.")
+
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    })
+
+                    .create();
+            dialog.show();
+        }
+        else if (!isGpsEnabled()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog dialog = builder.setTitle("The GPS service is not enabled.")
+
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    })
+
+                    .create();
+            dialog.show();
+
+        }
+
+
     }
 }

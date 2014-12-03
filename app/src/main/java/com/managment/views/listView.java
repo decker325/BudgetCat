@@ -22,6 +22,8 @@ import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class listView extends Activity {
@@ -97,6 +99,9 @@ public class listView extends Activity {
             for(String key:TransactionDB.getTransactionKeys()){
                 transactionList.add(TransactionDB.get(key));
             }
+
+            Collections.sort(transactionList,Transaction.transactionComparator);
+
             ArrayAdapterTransaction transactionAdapter = new ArrayAdapterTransaction(getActivity(),
                     R.layout.list_item_transaction_plus,
                     transactionList);
@@ -150,4 +155,5 @@ public class listView extends Activity {
         }
 
     }
+
 }

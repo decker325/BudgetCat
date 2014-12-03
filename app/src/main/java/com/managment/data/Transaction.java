@@ -2,6 +2,7 @@ package com.managment.data;
 
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -42,4 +43,36 @@ public class Transaction {
     public boolean update(){
         return TransactionDB.update(this);
     }
+
+    public static Comparator<Transaction> transactionComparator
+            = new Comparator<Transaction>() {
+
+        public int compare(Transaction x, Transaction y) {
+            int result =0;
+            if (x.year<y.year){
+                result=-1;
+            }else if(x.year>y.year){
+                result=1;
+            }else if(x.month<y.month){
+                result=-1;
+            }else if(x.month>y.month){
+                result=1;
+            }else if(x.day<y.day){
+                result=-1;
+            }else if(x.month>y.month){
+                result=1;
+            }
+
+
+            return result;
+        }
+
+    };
+
+
+
+
+
+
+
 }

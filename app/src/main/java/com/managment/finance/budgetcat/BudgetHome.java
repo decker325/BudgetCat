@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.content.Intent;
 
 import com.managment.views.MapsActivity;
+import com.managment.views.MapsView;
 import com.managment.views.TableView;
 import com.managment.views.listView;
 
@@ -43,17 +44,16 @@ public class BudgetHome extends Activity {
             startActivity(intent);
         }else if(id== R.id.action_quit){
             System.exit(0);
-        }else if (id==R.id.action_map){
+        }else if (id==R.id.action_enter_data){
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
             Intent intent = new Intent(this, listView.class);
             startActivity(intent);
-        }else if (id==R.id.action_entry){
-            Intent intent = new Intent (this, entry.class);
+        }else if (id==R.id.action_map_view){
+            Intent intent = new Intent (this,MapsView.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-
     }
 }
