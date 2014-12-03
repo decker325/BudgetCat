@@ -1,27 +1,21 @@
 package com.managment.views;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.managment.data.Transaction;
 import com.managment.data.TransactionDB;
@@ -30,7 +24,7 @@ import com.managment.finance.budgetcat.R;
 import java.util.ArrayList;
 
 
-public class views extends Activity {
+public class listView extends Activity {
 
     private TransactionDB DBtrans =new TransactionDB();
 
@@ -75,7 +69,7 @@ public class views extends Activity {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
-            Intent intent = new Intent(this, views.class);
+            Intent intent = new Intent(this, listView.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -99,57 +93,26 @@ public class views extends Activity {
             Log.e(TAG, "+++ In onCreate() +++");
 
 
-            ArrayList<String> transactions = new ArrayList<String>();
-            ArrayList<String> transactionID = new ArrayList<String>();
-
-            ArrayList<ObjectItem> transactionItems = new ArrayList<ObjectItem>();
-
+            //ArrayList<String> transactions = new ArrayList<String>();
+//            ArrayList<String> transactionID = new ArrayList<String>();
+//            ArrayList<ObjectItem> transactionItems = new ArrayList<ObjectItem>();
+            ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
             for(String key:TransactionDB.getTransactionKeys()){
-
-                Transaction toAdded = TransactionDB.get(key);
-                transactionID.add(toAdded.TranscationID);
-                transactions.add("X:"+toAdded.amount);
-                transactionItems.add(new ObjectItem(toAdded.TranscationID,"X:"+toAdded.amount));
+                transactionList.add(TransactionDB.get(key));
             }
-
-
-            ArrayAdapterItem adapter = new ArrayAdapterItem(getActivity(),
+            ArrayAdapterTransaction transactionAdapter = new ArrayAdapterTransaction(getActivity(),
                     R.layout.list_item_transactions,
-                    transactionItems );
+                    transactionList);
 
-//            transactions.add("Gas,22.87");
-//            transactions.add("Rent,400");
-//            transactions.add("Food,10.50");
-//            transactions.add("Gas,22.87");
-//            transactions.add("Rent,400");
-//            transactions.add("Food,10.50");
-//            transactions.add("Gas,22.87");
-//            transactions.add("Rent,400");
-//            transactions.add("Food,10.50");
-//            transactions.add("Gas,22.87");
-//            transactions.add("Rent,400");
-//
-
-
-
-            //R.layout.list_item_forecast;
-
-            ArrayAdapter<String> mEntryAdapter = new ArrayAdapter<String>(
-                    getActivity(),
-                    R.layout.list_item_transactions,
-                    R.id.list_item_transactions_textview,
-                    transactions
-            );
-
-
+            //set adapter
             ListView listView =(ListView)rootView.findViewById(R.id.listView_transactions);
-            listView.setAdapter(adapter);
-//            listView.setAdapter(mEntryAdapter);
+            listView.setAdapter(transactionAdapter);
+
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Context context = view.getContext();
-
                     TextView textViewItem = ((TextView) view.findViewById(R.id.list_item_transactions_textview));
 
                     // get the clicked item name
@@ -174,11 +137,8 @@ public class views extends Activity {
                             })
                             .create();
                     dialog.show();
-
-
                 }
             });
-
 
             return rootView;
         }

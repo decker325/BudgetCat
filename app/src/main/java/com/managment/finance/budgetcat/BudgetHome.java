@@ -8,7 +8,7 @@ import android.content.Intent;
 
 import com.managment.views.MapsActivity;
 import com.managment.views.TableView;
-import com.managment.views.views;
+import com.managment.views.listView;
 
 
 public class BudgetHome extends Activity {
@@ -47,7 +47,7 @@ public class BudgetHome extends Activity {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
-            Intent intent = new Intent(this, views.class);
+            Intent intent = new Intent(this, listView.class);
             startActivity(intent);
         }else if (id==R.id.action_entry){
             Intent intent = new Intent (this, entry.class);
