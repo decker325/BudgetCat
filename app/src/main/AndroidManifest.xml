@@ -41,7 +41,7 @@
             android:label="@string/title_activity_entry" >
         </activity>
         <activity
-            android:name="com.managment.views.views"
+            android:name="com.managment.views.listView"
             android:label="@string/title_activity_views" >
         </activity>
 

@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity {
                 }else{
                     alertMessage="Data added";
                     double amount = Double.parseDouble(valueText);
-
+                     textAmount.setText("");
 
                     Transaction newTran = new Transaction();
                     newTran.amount=amount;
@@ -187,7 +187,7 @@ public class MapsActivity extends FragmentActivity {
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
-            Intent intent = new Intent(this, views.class);
+            Intent intent = new Intent(this, listView.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
