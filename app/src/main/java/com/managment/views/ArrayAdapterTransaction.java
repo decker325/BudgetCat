@@ -68,9 +68,9 @@ public class ArrayAdapterTransaction extends ArrayAdapter<Transaction> {
 
         // get the TextView and then set the text (item name) and tag (item ID) values
 
-        TextView textViewItem = (TextView) convertView.findViewById(R.id.list_item_transactions_textview);
+        TextView textViewItem = (TextView) convertView.findViewById(R.id.list_item_transactions_plus_amount);
         String amount = String.format("%.2f", transactionItem.amount);
-        textViewItem.setText("Amount:"+amount);
+        textViewItem.setText(amount);
         textViewItem.setTag(transactionItem.TranscationID);
 
         return convertView;

@@ -101,7 +101,7 @@ public class listView extends Activity {
                 transactionList.add(TransactionDB.get(key));
             }
             ArrayAdapterTransaction transactionAdapter = new ArrayAdapterTransaction(getActivity(),
-                    R.layout.list_item_transactions,
+                    R.layout.list_item_transaction_plus,
                     transactionList);
 
             //set adapter
@@ -113,7 +113,7 @@ public class listView extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Context context = view.getContext();
-                    TextView textViewItem = ((TextView) view.findViewById(R.id.list_item_transactions_textview));
+                    TextView textViewItem = ((TextView) view.findViewById(R.id.list_item_transactions_plus_amount));
 
                     // get the clicked item name
                     String listItemText = textViewItem.getText().toString();
