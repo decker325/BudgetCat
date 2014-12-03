@@ -78,11 +78,6 @@ public class MapsActivity extends FragmentActivity {
 
                     Transaction newTran = new Transaction();
                     newTran.amount=amount;
-                    String newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
-                    while(TransactionDB.getTransactionKeys().contains(newKey)){
-                        newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
-                    };
-                    newTran.TranscationID=newKey;
                     newTran.add();
                 }
                 showMessage(alertMessage,MapsActivity.this);
