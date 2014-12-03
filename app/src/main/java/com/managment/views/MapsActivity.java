@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,6 +31,7 @@ import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -309,8 +311,9 @@ public class MapsActivity extends FragmentActivity {
     }
 
     private void showMessage(String message,Context context){
+        final String dialogText = message;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        AlertDialog dialog = builder.setTitle(message)
+        final AlertDialog dialog = builder.setTitle(message)
                 .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
@@ -318,5 +321,20 @@ public class MapsActivity extends FragmentActivity {
                 })
                 .create();
         dialog.show();
+
+        new CountDownTimer(3500, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                dialog.setTitle(dialogText+"  ("+millisUntilFinished/1000+")");
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        }.start();
     }
 }

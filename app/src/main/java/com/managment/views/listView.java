@@ -119,7 +119,7 @@ public class listView extends Activity {
                     final String listItemId = textViewItem.getTag().toString();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    AlertDialog dialog = builder.setTitle(listItemText+listItemId)
+                    AlertDialog dialog = builder.setTitle("Do you want to delete this record?")
                             .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog
