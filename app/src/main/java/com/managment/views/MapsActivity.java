@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -30,6 +31,8 @@ import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Handler;
 
@@ -69,6 +72,10 @@ public class MapsActivity extends FragmentActivity {
         buttonEnter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 EditText textAmount =  (EditText)findViewById(R.id.entry_editText);
+                DatePicker dateSelect = (DatePicker)findViewById(R.id.map_datePicker);
+
+
+
                 String valueText =textAmount.getText().toString();
                 String alertMessage;
                 if(valueText.length()==0){
@@ -76,13 +83,19 @@ public class MapsActivity extends FragmentActivity {
                 }else{
                     alertMessage="Data added";
                     double amount = Double.parseDouble(valueText);
-                     textAmount.setText("");
+                    textAmount.setText("");
 
                     Transaction newTran = new Transaction();
                     newTran.amount=amount;
+
+                    newTran.year= dateSelect.getYear();
+                    newTran.month=dateSelect.getMonth();
+                    newTran.day= dateSelect.getDayOfMonth();
+
+
                     newTran.add();
                 }
-                showMessage(alertMessage,MapsActivity.this);
+                showMessage(alertMessage, MapsActivity.this);
 
             }
         });

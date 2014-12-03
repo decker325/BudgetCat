@@ -1,18 +1,23 @@
 package com.managment.data;
 
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
 
 public class Transaction {
     public String accountName;
     private String transcationID;
     public double amount;
-    public String date;
     public int category;
     public double locationLat;
     public double locationLong;
     public String locationName;
     public String notes;
+    public int year;
+    public int month;
+    public int day;
 
     public Transaction(){
         String newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
