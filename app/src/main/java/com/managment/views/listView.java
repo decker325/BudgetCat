@@ -93,9 +93,6 @@ public class listView extends Activity {
             Log.e(TAG, "+++ In onCreate() +++");
 
 
-            //ArrayList<String> transactions = new ArrayList<String>();
-//            ArrayList<String> transactionID = new ArrayList<String>();
-//            ArrayList<ObjectItem> transactionItems = new ArrayList<ObjectItem>();
             ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
             for(String key:TransactionDB.getTransactionKeys()){
                 transactionList.add(TransactionDB.get(key));
@@ -108,7 +105,7 @@ public class listView extends Activity {
             ListView listView =(ListView)rootView.findViewById(R.id.listView_transactions);
             listView.setAdapter(transactionAdapter);
 
-
+            //Set onclick listener
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -132,6 +129,9 @@ public class listView extends Activity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog
                                     TransactionDB.remove(TransactionDB.get(listItemId));
+                                    getActivity().finish();
+                                    Intent intent = new Intent(getActivity(), listView.class);
+                                    startActivity(intent);
                                 }
 
                             })
@@ -148,5 +148,6 @@ public class listView extends Activity {
             Log.e(TAG, "++ In onResume() ++");
             // Rest of onResume()...
         }
+
     }
 }

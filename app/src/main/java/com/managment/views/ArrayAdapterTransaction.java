@@ -71,7 +71,7 @@ public class ArrayAdapterTransaction extends ArrayAdapter<Transaction> {
         TextView textViewItem = (TextView) convertView.findViewById(R.id.list_item_transactions_plus_amount);
         String amount = String.format("%.2f", transactionItem.amount);
         textViewItem.setText(amount);
-        textViewItem.setTag(transactionItem.TranscationID);
+        textViewItem.setTag(transactionItem.getTransactionID());
 
         return convertView;
 

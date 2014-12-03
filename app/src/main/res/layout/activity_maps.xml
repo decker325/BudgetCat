@@ -27,7 +27,7 @@ android:orientation="vertical" >
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/entry_spinner"
-            android:layout_toEndOf="@+id/textView"
+            android:layout_toEndOf="@+id/typeID"
             android:spinnerMode="dropdown"
             android:layout_alignParentTop="true" />
 
@@ -48,7 +48,7 @@ android:orientation="vertical" >
 
             android:id="@+id/entry_editText"
             android:layout_below="@+id/entry_spinner"
-            android:layout_toEndOf="@+id/textView"
+            android:layout_toEndOf="@+id/amountID"
             android:layout_alignParentEnd="true" />
 
         <Button
