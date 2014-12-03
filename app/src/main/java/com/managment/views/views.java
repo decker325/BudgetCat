@@ -107,9 +107,9 @@ public class views extends Activity {
             for(String key:TransactionDB.getTransactionKeys()){
 
                 Transaction toAdded = TransactionDB.get(key);
-                transactionID.add(toAdded.TranscationID);
+                transactionID.add(toAdded.getTransactionID());
                 transactions.add("X:"+toAdded.amount);
-                transactionItems.add(new ObjectItem(toAdded.TranscationID,"X:"+toAdded.amount));
+                transactionItems.add(new ObjectItem(toAdded.getTransactionID(),"X:"+toAdded.amount));
             }
 
 

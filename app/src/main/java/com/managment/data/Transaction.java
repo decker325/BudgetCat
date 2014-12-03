@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Transaction {
     public String accountName;
-    public String TranscationID;
+    private String TranscationID;
     public double amount;
     public String date;
     public int category;
@@ -15,7 +15,15 @@ public class Transaction {
     public String notes;
 
     public Transaction(){
+        String newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
+        while(TransactionDB.getTransactionKeys().contains(newKey)){
+            newKey=Long.toHexString(Double.doubleToLongBits(Math.random()));
+        };
+        TranscationID=newKey;
+    }
 
+    public String getTransactionID(){
+        return TranscationID;
     }
 
     public boolean add(){

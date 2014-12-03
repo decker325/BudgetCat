@@ -23,12 +23,12 @@ public class TransactionDB {
         boolean rowAdded = true;
         try{
 
-            if(transactions.containsKey(transaction.TranscationID)) {
+            if(transactions.containsKey(transaction.getTransactionID())) {
                 rowAdded = false;
             }else {
-                transactions.put(transaction.TranscationID, transaction);
+                transactions.put(transaction.getTransactionID(), transaction);
                 NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
-                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
+                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.getTransactionID());
                 Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
                 parser.addNode(node, nodes.item(0));
             }
@@ -43,10 +43,10 @@ public class TransactionDB {
     public static boolean remove(Transaction transaction){
         boolean rowRemoved = true;
         try{
-            if(transactions.containsKey(transaction.TranscationID)) {
+            if(!transactions.containsKey(transaction.getTransactionID())) {
                 rowRemoved = false;
             }else {
-                transactions.remove(transaction);
+                transactions.remove(transaction.getTransactionID());
 //                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
 //                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
 //                Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
@@ -64,7 +64,8 @@ public class TransactionDB {
     public static boolean update(Transaction transaction){
         boolean rowUpdated = true;
         try{
-
+            transactions.remove(transaction.getTransactionID());
+            transactions.put(transaction.getTransactionID(), transaction);
 
         }catch (Exception e){
             rowUpdated = false;
