@@ -40,18 +40,15 @@ public class MapsView extends FragmentActivity {
 
             CircleOptions circleOptions = new CircleOptions()
                     .center(tranLocation)   //set center
-                    .radius(500)   //set radius in meters
+                    .radius(next.amount/10)   //set radius in meters
                     .fillColor(0x300000FF)
                     .strokeColor(0x500000FF)
-                    .strokeWidth((int)next.amount/100);
+                    .strokeWidth(5);
             mMap.addCircle(circleOptions);
-
-            String alertMessage = "Long:"+next.locationLong+";"+next.locationLat;
-            showMessage(alertMessage,MapsView.this);
 
 
             CameraPosition myPosition = new CameraPosition.Builder()
-                    .target(tranLocation).zoom(10).bearing(0).tilt(0).build();
+                    .target(tranLocation).zoom(17).bearing(0).tilt(0).build();
             mMap.animateCamera(
                     CameraUpdateFactory.newCameraPosition(myPosition));
         }

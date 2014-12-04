@@ -5,7 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.managment.data.Transaction;
 import com.managment.views.MapsActivity;
 import com.managment.views.MapsView;
 import com.managment.views.TableView;
@@ -18,10 +25,42 @@ public class BudgetHome extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.budge_home);
 
         //Intent intent = new Intent(this, TableView.class);
 //        Intent intent = new Intent(this, MapsActivity.class);
 //        startActivity(intent);
+
+        Button buttonEnter = (Button) findViewById(R.id.button_enter_view);
+        buttonEnter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(BudgetHome.this,MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button buttonMap = (Button) findViewById(R.id.button_map_view);
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(BudgetHome.this,MapsView.class);
+                startActivity(intent);
+            }
+        });
+        Button buttonList = (Button) findViewById(R.id.button_list_view);
+        buttonList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(BudgetHome.this,listView.class);
+                startActivity(intent);
+            }
+        });
+        Button buttonQuit = (Button) findViewById(R.id.button_quit);
+        buttonQuit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                System.exit(0);
+            }
+        });
+
+
+
 
     }
 
