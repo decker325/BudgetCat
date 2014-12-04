@@ -1,13 +1,27 @@
 package com.managment.views;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.managment.data.Transaction;
+import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
+
+import java.util.ArrayList;
 
 public class MapsView extends FragmentActivity {
 
@@ -18,6 +32,33 @@ public class MapsView extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_view);
         setUpMapIfNeeded();
+
+        ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+        for(String key: TransactionDB.getTransactionKeys()){
+            Transaction next = TransactionDB.get(key);
+            LatLng tranLocation= new LatLng(next.locationLat,next.locationLong);
+
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(tranLocation)   //set center
+                    .radius(500)   //set radius in meters
+                    .fillColor(0x300000FF)
+                    .strokeColor(0x500000FF)
+                    .strokeWidth((int)next.amount/100);
+            mMap.addCircle(circleOptions);
+
+            String alertMessage = "Long:"+next.locationLong+";"+next.locationLat;
+            showMessage(alertMessage,MapsView.this);
+
+
+            CameraPosition myPosition = new CameraPosition.Builder()
+                    .target(tranLocation).zoom(10).bearing(0).tilt(0).build();
+            mMap.animateCamera(
+                    CameraUpdateFactory.newCameraPosition(myPosition));
+        }
+
+
+
+
     }
 
     @Override
@@ -64,6 +105,64 @@ public class MapsView extends FragmentActivity {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.budget_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, TableView.class);
+            startActivity(intent);
+        }else if(id== R.id.action_quit){
+            System.exit(0);
+        }else if (id==R.id.action_enter_data){
+            Intent intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        }else if(id==R.id.action_list){
+            Intent intent = new Intent(this, listView.class);
+            startActivity(intent);
+        }else if (id==R.id.action_map_view){
+            Intent intent = new Intent (this,MapsView.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showMessage(String message,Context context){
+        final String dialogText = message;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog dialog = builder.setTitle(message)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                })
+                .create();
+        dialog.show();
+
+        new CountDownTimer(3500, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                dialog.setTitle(dialogText+"  ("+millisUntilFinished/1000+")");
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        }.start();
+    }
 
 
 }

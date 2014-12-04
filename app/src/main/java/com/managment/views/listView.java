@@ -64,19 +64,22 @@ public class listView extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, TableView.class);
+            startActivity(intent);
         }else if(id== R.id.action_quit){
             System.exit(0);
-        }else if (id==R.id.action_map){
+        }else if (id==R.id.action_enter_data){
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);
         }else if(id==R.id.action_list){
             Intent intent = new Intent(this, listView.class);
             startActivity(intent);
+        }else if (id==R.id.action_map_view){
+            Intent intent = new Intent (this,MapsView.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     /**
@@ -153,6 +156,7 @@ public class listView extends Activity {
             Log.e(TAG, "++ In onResume() ++");
             // Rest of onResume()...
         }
+
 
     }
 

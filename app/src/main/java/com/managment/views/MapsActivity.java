@@ -71,31 +71,27 @@ public class MapsActivity extends FragmentActivity {
             public void onClick(View v) {
                 EditText textAmount =  (EditText)findViewById(R.id.entry_editText);
                 DatePicker dateSelect = (DatePicker)findViewById(R.id.map_datePicker);
-
-
-
                 String valueText =textAmount.getText().toString();
                 String alertMessage;
                 if(valueText.length()==0){
                     alertMessage="Amount cannot be empty";
                 }else{
                     alertMessage="Data added";
-                    double amount = Double.parseDouble(valueText);
                     textAmount.setText("");
-
                     Transaction newTran = new Transaction();
-                    newTran.amount=amount;
-
+                    newTran.amount=Double.parseDouble(valueText);
                     newTran.year= dateSelect.getYear();
                     newTran.month=dateSelect.getMonth();
                     newTran.day= dateSelect.getDayOfMonth();
-
-
+                    LatLng currentLatLng =currentLocation();
+                    newTran.locationLat=currentLatLng.latitude;
+                    newTran.locationLong=currentLatLng.longitude;
                     newTran.add();
                 }
                 showMessage(alertMessage, MapsActivity.this);
-
             }
+
+
         });
 
 
@@ -122,8 +118,7 @@ public class MapsActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, TableView.class);
-            startActivity(intent);
+            currentLocation();
         }else if(id== R.id.action_quit){
             System.exit(0);
         }else if (id==R.id.action_enter_data){
@@ -279,8 +274,8 @@ public class MapsActivity extends FragmentActivity {
             }
         }.start();
     }
-    private void currentLocation(){
-
+    private LatLng currentLocation(){
+        LatLng result=new LatLng(0,0);
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
@@ -297,37 +292,28 @@ public class MapsActivity extends FragmentActivity {
             Location myLocation;
             try{
                 myLocation= mMap.getMyLocation();
-                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                result= new LatLng(myLocation.getLatitude(),
                         myLocation.getLongitude());
 
                 CameraPosition myPosition = new CameraPosition.Builder()
-                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                        .target(result).zoom(10).bearing(0).tilt(0).build();
                 mMap.animateCamera(
                         CameraUpdateFactory.newCameraPosition(myPosition));
 //getActivity()
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
-                        "\nLat:" + myLocation.getLongitude())
 
-                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        })
-
-                        .create();
-                dialog.show();
-
-                CircleOptions circleOptions = new CircleOptions()
-                        .center(myLatLng)   //set center
-                        .radius(500)   //set radius in meters
-                        .fillColor(0x300000FF)
-                        .strokeColor(0x500000FF)
-                        .strokeWidth(5);
-
-                mMap.addCircle(circleOptions);
-
-
+                //debug use
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                AlertDialog dialog = builder.setTitle("Lat:" + myLocation.getLatitude() +
+//                        "\nLat:" + myLocation.getLongitude())
+//
+//                        .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                // User cancelled the dialog
+//                            }
+//                        })
+//
+//                        .create();
+//                dialog.show();
 
 
 
@@ -363,6 +349,8 @@ public class MapsActivity extends FragmentActivity {
 
         }
 
+        return result;
 
     }
+
 }

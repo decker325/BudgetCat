@@ -31,8 +31,12 @@ public class TransactionDB {
                 Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.getTransactionID());
                 Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
                 Node node2=parser.addNodeElements("Year", Double.toString(transaction.year), element);
+                Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
+                Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
                 parser.addNode(node, nodes.item(0));
                 parser.addNode(node2, nodes.item(1));
+                parser.addNode(node3, nodes.item(2));
+                parser.addNode(node4, nodes.item(3));
             }
 
         }catch (Exception e){
