@@ -1,7 +1,6 @@
 package com.managment.finance.budgetcat;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -46,7 +44,7 @@ public class entry extends Activity {
         //R.layout.list_item_forecast;
 
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
-                R.layout.list_item_transactions,
+                R.layout.spinner_type,
                 type
         );
 

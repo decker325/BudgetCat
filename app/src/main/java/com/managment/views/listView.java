@@ -121,7 +121,7 @@ public class listView extends Activity {
                     TextView textViewItem = ((TextView) view.findViewById(R.id.list_item_transactions_plus_amount));
 
                     // get the clicked item name
-                    String listItemText = textViewItem.getText().toString();
+                    //String listItemText = textViewItem.getText().toString();
 
                     // get the clicked item ID
                     final String listItemId = textViewItem.getTag().toString();

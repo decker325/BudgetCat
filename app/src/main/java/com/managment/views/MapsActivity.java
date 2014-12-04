@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,7 +25,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.managment.data.Transaction;
@@ -33,6 +33,7 @@ import com.managment.finance.budgetcat.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -51,11 +52,12 @@ public class MapsActivity extends FragmentActivity {
         Spinner spinner = (Spinner) findViewById(R.id.entry_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayList<String> type = new ArrayList<String>();
-        type.add("Gas");
-        type.add("Rent");
+        type.add("---      Gas     ---");
+        type.add("---      Rent    ---");
+        type.add("*** Add New Type ***");
         getFragmentManager();
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
-                R.layout.list_item_transactions,
+                R.layout.spinner_type,
                 type
         );
 
@@ -64,6 +66,44 @@ public class MapsActivity extends FragmentActivity {
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(typeAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getSelectedItem().toString().equals(("*** Add New Type ***"))){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MapsActivity.this);
+
+                    alert.setTitle("Enter a New type;");
+                    alert.setMessage("Message~bla bla bla");
+
+// Set an EditText view to get user input
+                    final EditText input = new EditText(MapsActivity.this);
+                    alert.setView(input);
+
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            String value = input.getText().toString();
+                            //TODO get value to types
+                        }
+                    });
+
+                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Canceled.
+                        }
+                    });
+
+                    alert.show();
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         final Button buttonEnter = (Button) findViewById(R.id.button_enter);
@@ -93,6 +133,8 @@ public class MapsActivity extends FragmentActivity {
 
 
         });
+
+
 
 
     }
