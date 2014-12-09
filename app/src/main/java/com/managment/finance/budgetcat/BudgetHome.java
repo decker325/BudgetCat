@@ -2,7 +2,9 @@ package com.managment.finance.budgetcat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
@@ -15,16 +17,23 @@ import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
 import com.managment.data.BcatDOMParsingTest;
 import com.managment.data.Transaction;
+import com.managment.data.TransactionDB;
 import com.managment.views.MapsActivity;
 import com.managment.views.MapsView;
 import com.managment.views.TableView;
 import com.managment.views.listView;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class BudgetHome extends Activity {
 
+    private static final String fileName = "Transactions.xml";
+    private static BcatDOMParsingTest parser ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +77,70 @@ public class BudgetHome extends Activity {
 
 
         //Setup internal xml file for database
-        String filename = "Transactions.xml";
-        FileOutputStream outputStream;
-        try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
 
-            outputStream.close();
-            BcatDOMParsingTest xmlPaser = new BcatDOMParsingTest(filename);
+//        FileOutputStream outputStream;
+//        try {
+//            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+//
+//            outputStream.close();
+//            BcatDOMParsingTest xmlPaser = new BcatDOMParsingTest(filename);
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        try
+        {
+            // Creates a trace file in the primary external storage space of the
+            // current application.
+            // If the file does not exists, it is created.
+//            File traceFile = new File(((Context)this).getExternalFilesDir(null), fileName);
+            File traceFile = new File(((Context)this).getFilesDir(), fileName);
+
+            TransactionDB.file=traceFile;
+            parser =new BcatDOMParsingTest(traceFile);
+
+            if (!traceFile.exists()){
+                traceFile.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(traceFile, true /*append*/));
+                writer.write("<?xml version=\"1.0\"?>\n" +
+                        "<BudgetCat>\n" +
+                        "\n" +
+                        "\n" +
+                        "</BudgetCat>");
+                writer.close();
+
+            }
+
+
+
+            TransactionDB.getSessionData(parser.getParsedData());
+
+            // Adds a line to the trace file
+
+            // Refresh the data so it can seen when the device is plugged in a
+            // computer. You may have to unplug and replug the device to see the
+            // latest changes. This is not necessary if the user should not modify
+            // the files.
+            MediaScannerConnection.scanFile((Context) (this),
+                    new String[]{traceFile.toString()},
+                    null,
+                    null);
+
         }
-
-
+        catch (IOException e)
+        {
+            Log.e("com.management.finance.budgetcat.budgethome", "Unable to write to the file.");
+        }
     }
+
+
+
+
+
+
 
 
     @Override

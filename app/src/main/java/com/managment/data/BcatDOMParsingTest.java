@@ -4,6 +4,8 @@ package com.managment.data;
 Parts of this code reference and uses methods from DomParsingTest from Rajiv Ramnath distributed enterprise computing course.
  */
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
@@ -29,10 +31,13 @@ import javax.xml.parsers.*;
 
 public class BcatDOMParsingTest {
 
-    private String fileName;
+    private File file;
 
-    public BcatDOMParsingTest(String file) {
-        this.fileName = file;
+    public BcatDOMParsingTest(File file) {
+        this.file = file;
+        Log.e("com.management.finance.budgetcat.Dom.constuctor", file.getAbsoluteFile().toString());
+
+
     }
 
 
@@ -97,7 +102,9 @@ public class BcatDOMParsingTest {
         DocumentBuilderFactory factory =
                 DocumentBuilderFactory.newInstance();
         DocumentBuilder parser = factory.newDocumentBuilder();
-        TheDocument = parser.parse(fileName);
+//        TheDocument = parser.parse(file.getAbsolutePath());//changed to file
+        TheDocument = parser.parse(file);
+        Log.e("com.management.finance.budgetcat.DomParseing", file.getAbsoluteFile().toString());
         return (TheDocument);
     }
 
@@ -196,14 +203,13 @@ public class BcatDOMParsingTest {
         // Add the new node structure to the parent node
         parent.appendChild(node);
 
-
         return parent;
     }
 
     public boolean addNode(Node node, Node parent){
         boolean addedNode = true;
         try {
-
+            Log.e("com.management.finance.budgetcat.DOM.addNode", parent.toString());
             Document document = parent.getOwnerDocument();
 
             // Add the new node structure to the parent node
@@ -212,8 +218,9 @@ public class BcatDOMParsingTest {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new File(fileName));
+            StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
+
         } catch (Exception e) {
             addedNode = false;
         }
@@ -233,5 +240,7 @@ public class BcatDOMParsingTest {
     }
 
 }
+
+
 
 

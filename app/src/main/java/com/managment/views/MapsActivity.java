@@ -27,10 +27,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.managment.data.BcatDOMParsingTest;
 import com.managment.data.Transaction;
 import com.managment.data.TransactionDB;
 import com.managment.finance.budgetcat.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,9 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity {
 
     private TransactionDB DBtrans =new TransactionDB();
+    private static final String fileName = "Transactions.xml";
+    private static BcatDOMParsingTest parser ;
+
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -116,6 +121,11 @@ public class MapsActivity extends FragmentActivity {
                 if(valueText.length()==0){
                     alertMessage="Amount cannot be empty";
                 }else{
+                    File traceFile = new File(((MapsActivity.this).getFilesDir()), fileName);
+                    parser =new BcatDOMParsingTest(traceFile);
+                    TransactionDB.parser=parser;
+
+
                     alertMessage="Data added";
                     textAmount.setText("");
                     Transaction newTran = new Transaction();

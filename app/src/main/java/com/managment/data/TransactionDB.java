@@ -1,6 +1,13 @@
 package com.managment.data;
 // transactions
+import android.content.Context;
+import android.util.Log;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,10 +17,24 @@ import org.w3c.dom.NodeList;
 
 
 public class TransactionDB {
+    public static File file;
 
-    private static final String fileName = "Transactions.xml";
-    private static BcatDOMParsingTest parser = new BcatDOMParsingTest(fileName);
+    public static BcatDOMParsingTest parser;
     private static Map<String, Transaction> transactions = new HashMap<String, Transaction>();
+
+    public static void getSessionData(List<HashMap<String, String>> maps){
+        for(int i = 0; i < maps.size(); i++) {
+            HashMap<String, String> map = maps.get(i);
+            Transaction transaction = new Transaction();
+
+            transaction.transcationID = map.get("Transaction_ID");
+            transaction.amount = Double.parseDouble(map.get("Amount"));
+            transaction.locationLat = Double.parseDouble(map.get("Lat"));
+            transaction.locationLong = Double.parseDouble(map.get("Long"));
+            transaction.year = Integer.parseInt(map.get("Year"));
+            transactions.put(transaction.transcationID, transaction);
+        }
+    }
 
     public static Set<String> getTransactionKeys(){
         return transactions.keySet();
@@ -26,17 +47,40 @@ public class TransactionDB {
             if(transactions.containsKey(transaction.getTransactionID())) {
                 rowAdded = false;
             }else {
+                parser = new BcatDOMParsingTest(file);
+                Log.e("com.management.finance.budgetcat.TDB.add", file.getAbsoluteFile().toString());
+
+//
+//                transactions.put(transaction.getTransactionID(), transaction);
+//                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
+//                Log.e("com.management.finance.budgetcat.TDB.add", nodes.toString());
+//                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.transcationID);
+//                Node node = parser.addNodeElements("TransactionID", transaction.transcationID, element);
+//                Node node5 = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+//                Node node2=parser.addNodeElements("Year", Integer.toString(transaction.year), element);
+//                Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
+//                Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
+//                parser.addNode(node, nodes.item(0));
+//                parser.addNode(node2, nodes.item(1));
+//                parser.addNode(node3, nodes.item(2));
+//                parser.addNode(node4, nodes.item(3));
+//                parser.addNode(node5, nodes.item(4));
+
                 transactions.put(transaction.getTransactionID(), transaction);
-                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
-                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.getTransactionID());
-                Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
-                Node node2=parser.addNodeElements("Year", Double.toString(transaction.year), element);
+                Node parent = parser.FileRootDocumentGet();
+                NodeList nodes = (parent).getChildNodes();
+                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.transcationID);
+                Node node = parser.addNodeElements("TransactionID", transaction.transcationID, element);
+                Node node5 = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+                Node node2=parser.addNodeElements("Year", Integer.toString(transaction.year), element);
                 Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
                 Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
-                parser.addNode(node, nodes.item(0));
-                parser.addNode(node2, nodes.item(1));
-                parser.addNode(node3, nodes.item(2));
-                parser.addNode(node4, nodes.item(3));
+                parser.addNode(element, nodes.item(0));
+
+
+
+
+
             }
 
         }catch (Exception e){
@@ -48,15 +92,20 @@ public class TransactionDB {
     //TODO: polish this.
     public static boolean remove(Transaction transaction){
         boolean rowRemoved = true;
+        parser = new BcatDOMParsingTest(file);
+        Log.e("com.management.finance.budgetcat.TDB.remove", file.getAbsoluteFile().toString());
         try{
             if(!transactions.containsKey(transaction.getTransactionID())) {
                 rowRemoved = false;
             }else {
                 transactions.remove(transaction.getTransactionID());
-//                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
-//                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
-//                Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
-//                parser.addNode(node, nodes.item(0));
+                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
+                // Node[] theseNodes;
+                //BcatDOMParsingTest.NodeSelectManyGivenAttributeValue(,"TransactionID", transaction.transcationID);
+
+//            	Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
+//            	Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+//            	parser.addNode(node, nodes.item(0));
             }
 
 
