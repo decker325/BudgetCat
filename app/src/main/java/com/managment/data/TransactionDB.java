@@ -23,17 +23,22 @@ public class TransactionDB {
     private static Map<String, Transaction> transactions = new HashMap<String, Transaction>();
 
     public static void getSessionData(List<HashMap<String, String>> maps){
+        Log.e("com.management.finance.budgetcat.TDB.GetsessionData", maps.toString());
         for(int i = 0; i < maps.size(); i++) {
             HashMap<String, String> map = maps.get(i);
             Transaction transaction = new Transaction();
-
-            transaction.transcationID = map.get("Transaction_ID");
+            transaction.transcationID = map.get("TransactionID");
             transaction.amount = Double.parseDouble(map.get("Amount"));
             transaction.locationLat = Double.parseDouble(map.get("Lat"));
             transaction.locationLong = Double.parseDouble(map.get("Long"));
             transaction.year = Integer.parseInt(map.get("Year"));
+            transaction.month = map.get("Month")==null?1:Integer.parseInt(map.get("Month"));
+            transaction.day = map.get("Day")==null?1:Integer.parseInt(map.get("Day"));
             transactions.put(transaction.transcationID, transaction);
+//            Log.e("com.management.finance.budgetcat.TDB.tranLlist",  map.get("Transaction_ID")+i*10);
         }
+
+
     }
 
     public static Set<String> getTransactionKeys(){
@@ -75,9 +80,12 @@ public class TransactionDB {
                 Node node2=parser.addNodeElements("Year", Integer.toString(transaction.year), element);
                 Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
                 Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
+                Node node6=parser.addNodeElements("Month", Integer.toString(transaction.month), element);
+                Log.e("com.management.finance.budgetcat.TDB.add.month", Integer.toString(transaction.month));
+                Node node7= parser.addNodeElements("Day", Integer.toString(transaction.day), element);
+
+
                 parser.addNode(element, nodes.item(0));
-
-
 
 
 

@@ -98,10 +98,8 @@ public class BudgetHome extends Activity {
             // If the file does not exists, it is created.
 //            File traceFile = new File(((Context)this).getExternalFilesDir(null), fileName);
             File traceFile = new File(((Context)this).getFilesDir(), fileName);
-
             TransactionDB.file=traceFile;
             parser =new BcatDOMParsingTest(traceFile);
-
             if (!traceFile.exists()){
                 traceFile.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(traceFile, true /*append*/));
@@ -113,8 +111,6 @@ public class BudgetHome extends Activity {
                 writer.close();
 
             }
-
-
 
             TransactionDB.getSessionData(parser.getParsedData());
 
@@ -134,6 +130,8 @@ public class BudgetHome extends Activity {
         {
             Log.e("com.management.finance.budgetcat.budgethome", "Unable to write to the file.");
         }
+
+
     }
 
 

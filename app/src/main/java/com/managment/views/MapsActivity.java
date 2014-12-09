@@ -121,10 +121,12 @@ public class MapsActivity extends FragmentActivity {
                 if(valueText.length()==0){
                     alertMessage="Amount cannot be empty";
                 }else{
-                    File traceFile = new File(((MapsActivity.this).getFilesDir()), fileName);
-                    parser =new BcatDOMParsingTest(traceFile);
-                    TransactionDB.parser=parser;
+//                    File traceFile = new File(((MapsActivity.this).getFilesDir()), fileName);
+//                    parser =new BcatDOMParsingTest(traceFile);
+//                    TransactionDB.parser=parser;
+                    LatLng currentLatLng =currentLocation();
 
+                    if(currentLatLng.longitude!=0&&currentLatLng.latitude!=0){
 
                     alertMessage="Data added";
                     textAmount.setText("");
@@ -133,10 +135,12 @@ public class MapsActivity extends FragmentActivity {
                     newTran.year= dateSelect.getYear();
                     newTran.month=dateSelect.getMonth();
                     newTran.day= dateSelect.getDayOfMonth();
-                    LatLng currentLatLng =currentLocation();
                     newTran.locationLat=currentLatLng.latitude;
                     newTran.locationLong=currentLatLng.longitude;
                     newTran.add();
+                    }else{
+                        alertMessage="Data not added";
+                    }
                 }
                 showMessage(alertMessage, MapsActivity.this);
             }

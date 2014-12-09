@@ -104,7 +104,9 @@ public class BcatDOMParsingTest {
         DocumentBuilder parser = factory.newDocumentBuilder();
 //        TheDocument = parser.parse(file.getAbsolutePath());//changed to file
         TheDocument = parser.parse(file);
-        Log.e("com.management.finance.budgetcat.DomParseing", file.getAbsoluteFile().toString());
+        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", file.getAbsoluteFile().toString());
+        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", parser.toString());
+
         return (TheDocument);
     }
 
