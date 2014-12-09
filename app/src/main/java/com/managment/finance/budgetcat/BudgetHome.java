@@ -96,8 +96,8 @@ public class BudgetHome extends Activity {
             // Creates a trace file in the primary external storage space of the
             // current application.
             // If the file does not exists, it is created.
-//            File traceFile = new File(((Context)this).getExternalFilesDir(null), fileName);
-            File traceFile = new File(((Context)this).getFilesDir(), fileName);
+            File traceFile = new File(((Context)this).getExternalFilesDir(null), fileName);
+//            File traceFile = new File(((Context)this).getFilesDir(), fileName);
             TransactionDB.file=traceFile;
             parser =new BcatDOMParsingTest(traceFile);
             if (!traceFile.exists()){

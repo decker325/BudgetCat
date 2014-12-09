@@ -35,7 +35,7 @@ public class BcatDOMParsingTest {
 
     public BcatDOMParsingTest(File file) {
         this.file = file;
-        Log.e("com.management.finance.budgetcat.Dom.constuctor", file.getAbsoluteFile().toString());
+//        Log.e("com.management.finance.budgetcat.Dom.constuctor", file.getAbsoluteFile().toString());
 
 
     }
@@ -104,8 +104,8 @@ public class BcatDOMParsingTest {
         DocumentBuilder parser = factory.newDocumentBuilder();
 //        TheDocument = parser.parse(file.getAbsolutePath());//changed to file
         TheDocument = parser.parse(file);
-        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", file.getAbsoluteFile().toString());
-        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", parser.toString());
+//        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", file.getAbsoluteFile().toString());
+//        Log.e("com.management.finance.budgetcat.Dom.FileRootDocument", parser.toString());
 
         return (TheDocument);
     }
@@ -211,7 +211,7 @@ public class BcatDOMParsingTest {
     public boolean addNode(Node node, Node parent){
         boolean addedNode = true;
         try {
-            Log.e("com.management.finance.budgetcat.DOM.addNode", parent.toString());
+//            Log.e("com.management.finance.budgetcat.DOM.addNode", parent.toString());
             Document document = parent.getOwnerDocument();
 
             // Add the new node structure to the parent node
@@ -228,6 +228,36 @@ public class BcatDOMParsingTest {
         }
         return addedNode;
     }
+
+
+//    public boolean deleteNode(Node nodeToRemove, Node parent){
+//        boolean addedNode = true;
+//        try {
+//            Document document = parent.getOwnerDocument();
+//
+//
+//            NodeList nodelist = parent.getChildNodes();
+//            while (nodelist.getLength() > 0) {
+//                Node node = nodelist.item(0);
+//                node.getParentNode().removeChild(node);
+//            }
+//
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = transformerFactory.newTransformer();
+//            DOMSource source = new DOMSource(document);
+//            StreamResult result = new StreamResult(file);
+//            transformer.transform(source, result);
+//
+//        }
+//
+//
+//        catch (Exception e) {
+//            addedNode = false;
+//        }
+//        return addedNode;
+//    }
+
+
 
     public Element createParentElement(String tagName, Node parent, String attributeName, String attributeValue){
 

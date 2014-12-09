@@ -2,8 +2,12 @@ package com.managment.data;
 // transactions
 import android.content.Context;
 import android.util.Log;
+//import android.util.Log;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +22,13 @@ import org.w3c.dom.NodeList;
 
 public class TransactionDB {
     public static File file;
+    private static final String fileName = "Transactions.xml";
+
 
     public static BcatDOMParsingTest parser;
     private static Map<String, Transaction> transactions = new HashMap<String, Transaction>();
 
     public static void getSessionData(List<HashMap<String, String>> maps){
-        Log.e("com.management.finance.budgetcat.TDB.GetsessionData", maps.toString());
         for(int i = 0; i < maps.size(); i++) {
             HashMap<String, String> map = maps.get(i);
             Transaction transaction = new Transaction();
@@ -35,7 +40,6 @@ public class TransactionDB {
             transaction.month = map.get("Month")==null?1:Integer.parseInt(map.get("Month"));
             transaction.day = map.get("Day")==null?1:Integer.parseInt(map.get("Day"));
             transactions.put(transaction.transcationID, transaction);
-//            Log.e("com.management.finance.budgetcat.TDB.tranLlist",  map.get("Transaction_ID")+i*10);
         }
 
 
@@ -53,24 +57,6 @@ public class TransactionDB {
                 rowAdded = false;
             }else {
                 parser = new BcatDOMParsingTest(file);
-                Log.e("com.management.finance.budgetcat.TDB.add", file.getAbsoluteFile().toString());
-
-//
-//                transactions.put(transaction.getTransactionID(), transaction);
-//                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
-//                Log.e("com.management.finance.budgetcat.TDB.add", nodes.toString());
-//                Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.transcationID);
-//                Node node = parser.addNodeElements("TransactionID", transaction.transcationID, element);
-//                Node node5 = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
-//                Node node2=parser.addNodeElements("Year", Integer.toString(transaction.year), element);
-//                Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
-//                Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
-//                parser.addNode(node, nodes.item(0));
-//                parser.addNode(node2, nodes.item(1));
-//                parser.addNode(node3, nodes.item(2));
-//                parser.addNode(node4, nodes.item(3));
-//                parser.addNode(node5, nodes.item(4));
-
                 transactions.put(transaction.getTransactionID(), transaction);
                 Node parent = parser.FileRootDocumentGet();
                 NodeList nodes = (parent).getChildNodes();
@@ -81,7 +67,6 @@ public class TransactionDB {
                 Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
                 Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
                 Node node6=parser.addNodeElements("Month", Integer.toString(transaction.month), element);
-                Log.e("com.management.finance.budgetcat.TDB.add.month", Integer.toString(transaction.month));
                 Node node7= parser.addNodeElements("Day", Integer.toString(transaction.day), element);
 
 
@@ -101,19 +86,47 @@ public class TransactionDB {
     public static boolean remove(Transaction transaction){
         boolean rowRemoved = true;
         parser = new BcatDOMParsingTest(file);
+
         Log.e("com.management.finance.budgetcat.TDB.remove", file.getAbsoluteFile().toString());
         try{
             if(!transactions.containsKey(transaction.getTransactionID())) {
                 rowRemoved = false;
-            }else {
-                transactions.remove(transaction.getTransactionID());
-                NodeList nodes = (parser.FileRootDocumentGet()).getChildNodes();
-                // Node[] theseNodes;
-                //BcatDOMParsingTest.NodeSelectManyGivenAttributeValue(,"TransactionID", transaction.transcationID);
 
-//            	Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.TranscationID);
-//            	Node node = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
-//            	parser.addNode(node, nodes.item(0));
+            }else {
+
+                PrintWriter writer = new PrintWriter(file);
+                writer.print("");
+                writer.close();
+                parser =new BcatDOMParsingTest(file);
+                BufferedWriter writer2 = new BufferedWriter(new FileWriter(file, true /*append*/));
+                writer2.write("<?xml version=\"1.0\"?>\n" +
+                        "<BudgetCat>\n" +
+                        "\n" +
+                        "\n" +
+                        "</BudgetCat>");
+                writer2.close();
+
+
+                transactions.remove(transaction.getTransactionID());
+
+                for (String x: transactions.keySet()){
+                    transaction=transactions.get(x);
+                    transactions.put(transaction.getTransactionID(), transaction);
+                    Node parent = parser.FileRootDocumentGet();
+                    NodeList nodes = (parent).getChildNodes();
+                    Element element = parser.createParentElement("Transaction", nodes.item(0), "TransactionID", transaction.transcationID);
+                    Node node = parser.addNodeElements("TransactionID", transaction.transcationID, element);
+                    Node node5 = parser.addNodeElements("Amount", Double.toString(transaction.amount), element);
+                    Node node2=parser.addNodeElements("Year", Integer.toString(transaction.year), element);
+                    Node node3=parser.addNodeElements("Long", Double.toString(transaction.locationLong), element);
+                    Node node4=parser.addNodeElements("Lat", Double.toString(transaction.locationLat), element);
+                    Node node6=parser.addNodeElements("Month", Integer.toString(transaction.month), element);
+                    Node node7= parser.addNodeElements("Day", Integer.toString(transaction.day), element);
+
+
+                    parser.addNode(element, nodes.item(0));
+                }
+
             }
 
 

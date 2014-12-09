@@ -99,7 +99,7 @@ public class listView extends Activity {
 
 
             ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
-            Log.e("com.management.finance.budgetcat.TDB.listviewOncreate", "size"+TransactionDB.getTransactionKeys().size());
+//            Log.e("com.management.finance.budgetcat.TDB.listviewOncreate", "size"+TransactionDB.getTransactionKeys().size());
             for(String key:TransactionDB.getTransactionKeys()){
                 transactionList.add(TransactionDB.get(key));
 
