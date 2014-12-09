@@ -1,6 +1,7 @@
 package com.managment.finance.budgetcat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +13,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.managment.data.BcatDOMParsingTest;
 import com.managment.data.Transaction;
 import com.managment.views.MapsActivity;
 import com.managment.views.MapsView;
 import com.managment.views.TableView;
 import com.managment.views.listView;
+
+import java.io.FileOutputStream;
 
 
 public class BudgetHome extends Activity {
@@ -30,6 +34,8 @@ public class BudgetHome extends Activity {
         //Intent intent = new Intent(this, TableView.class);
 //        Intent intent = new Intent(this, MapsActivity.class);
 //        startActivity(intent);
+
+        //create menu
 
         Button buttonEnter = (Button) findViewById(R.id.button_enter_view);
         buttonEnter.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +66,20 @@ public class BudgetHome extends Activity {
         });
 
 
+
+        //Setup internal xml file for database
+        String filename = "Transactions.xml";
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+
+            outputStream.close();
+            BcatDOMParsingTest xmlPaser = new BcatDOMParsingTest(filename);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
