@@ -1,4 +1,4 @@
-package com.managment.finance.budgetcat;
+package com.managment.finance.budgetcat.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
